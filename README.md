@@ -102,15 +102,15 @@ Merger/
 
 ### `merge(...)` arguments:
 
-| Argument                   | Type                  | Description                                             |
-|----------------------------|-----------------------|---------------------------------------------------------|
-| `dir_path`                 | `Path`                | Directory to recursively scan                           |
-| `ignore_patterns`          | `List[str]`           | Glob-like patterns to exclude files/directories         |
-| `output_path`              | `Path`                | Path to the output `.txt` file                          |
-| `validation_func_override` | `Dict[str, Callable]` | Per-extension validation for file readability           |
-| `read_func_override`       | `Dict[str, Callable]` | Per-extension content reader (e.g., for `.pdf`)         |
-| `write_if_empty`           | `bool`                | Include empty files in the merged output                |
-| `min_encoding_confidence`  | `float`               | Minimum confidence for encoding detection via `chardet` |
+| Argument                   | Type                                | Description                                             |
+|----------------------------|-------------------------------------|---------------------------------------------------------|
+| `dir_path`                 | `Path`                              | Directory to recursively scan                           |
+| `ignore_patterns`          | `List[str]`                         | Glob-like patterns to exclude files/directories         |
+| `output_path`              | `Path`                              | Path to the output `.txt` file                          |
+| `validation_func_override` | `Dict[str, Callable[[Path], bool]]` | Per-extension validation for file readability           |
+| `read_func_override`       | `Dict[str, Callable[[Path], str]]`  | Per-extension content reader (e.g., for `.pdf`)         |
+| `write_if_empty`           | `bool`                              | Include empty files in the merged output                |
+| `min_encoding_confidence`  | `float`                             | Minimum confidence for encoding detection via `chardet` |
 
 ---
 
@@ -136,13 +136,17 @@ Merger/
 
 To handle a new format (e.g., `.xml`):
 
-1. Implement a reader function:
+1. Implement a reader and validation function:
    `custom_readers/xml.py`
 
-2. Register it in your `merge()` or `append_content()` call:
+2. Register validation function in `merge()` or `is_text_file()` call
 
+3. Register reader function in `merge()` or `append_content()` call
+ 
 ```python
-read_func_override = {".xml": read_xml_func},
+from custom_readers.xml import read_xml, is_xml_valid  
+
+read_func_override = {".xml": read_xml},
 validation_func_override = {".xml": is_xml_valid}
 ```
 
