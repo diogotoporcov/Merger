@@ -24,7 +24,11 @@ def generate_tree_visualizer(root_path: Path, paths: List[Path]) -> str:
     file_tree: _FileTree = tree()
 
     for path in paths:
-        relative_parts = path.resolve().relative_to(root_path).parts
+        try:
+            relative_parts = path.resolve().relative_to(root_path).parts
+        except ValueError:
+            continue
+
         current = file_tree
         for part in relative_parts:
             current = current[part]
@@ -52,3 +56,4 @@ def generate_tree_visualizer(root_path: Path, paths: List[Path]) -> str:
 
     tree_output = f"{root_path.name}/\n{build_tree_str(file_tree)}"
     return tree_output
+
