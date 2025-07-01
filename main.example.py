@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from custom_readers.pdf import is_pdf_file, extract_pdf_text
+import custom_readers
 from merger.files import merge
 
 if __name__ == "__main__":
@@ -24,6 +24,6 @@ if __name__ == "__main__":
         root,
         ignore_patterns,
         output_path,
-        validation_func_override={".pdf": is_pdf_file},
-        read_func_override={".pdf": extract_pdf_text}
+        validation_func_override=custom_readers.validators,
+        read_func_override=custom_readers.readers
     )

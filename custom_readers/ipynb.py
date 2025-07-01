@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Final, Callable
 
 
 def is_ipynb_file(file_path: Path) -> bool:
@@ -60,3 +61,10 @@ def extract_ipynb_code_comments(file_path: Path, include_markdown: bool = True, 
                 result.append("```markdown\n" + "\n".join(block) + "\n```")
 
     return "\n\n".join(result)
+
+
+validator: Final[Callable[[Path], bool]] = is_ipynb_file
+reader: Final[Callable[[Path], str]] = extract_ipynb_code_comments
+
+
+__all__ = ["validator", "reader"]

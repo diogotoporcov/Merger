@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Callable, Final
 
 import pymupdf
 
@@ -42,3 +43,10 @@ def extract_pdf_text(file_path: Path) -> str:
 
     full_text = " ".join(texts)
     return full_text
+
+
+validator: Final[Callable[[Path], bool]] = is_pdf_file
+reader: Final[Callable[[Path], str]] = extract_pdf_text
+
+
+__all__ = ["validator", "reader"]
