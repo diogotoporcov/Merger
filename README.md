@@ -182,23 +182,23 @@ To support a new extension (e.g., `.xml`):
 1. Create a file `custom_readers/xml.py`
 2. Implement:
 
-```python
-from pathlib import Path
-from typing import Callable, Final
-
-def is_xml_valid(file: Path) -> bool:
-    # validation logic
-    ...
-
-def read_xml(file: Path) -> str:
-    # read logic
-    ...
-
-validator: Final[Callable[[Path], bool]] = is_xml_valid
-reader: Final[Callable[[Path], str]] = read_xml
-
-__all__ = ["validator", "reader"]
-```
+    ```python
+    from pathlib import Path
+    from typing import Callable, Final
+    
+    def is_xml_valid(file: Path) -> bool:
+        # validation logic
+        ...
+    
+    def read_xml(file: Path) -> str:
+        # read logic
+        ...
+    
+    validator: Final[Callable[[Path], bool]] = is_xml_valid
+    reader: Final[Callable[[Path], str]] = read_xml
+    
+    __all__ = ["validator", "reader"]
+    ```
 
 3. That’s it! The system will detect it automatically via `custom_readers.__init__.py`.
 
